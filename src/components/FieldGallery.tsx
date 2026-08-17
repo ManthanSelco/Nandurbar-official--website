@@ -1,8 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { GALLERY } from "@/lib/gallery";
+import { useI18n } from "@/lib/i18n";
 
 export function FieldGallery() {
+  const { t } = useI18n();
+
   const [i, setI] = useState(0);
   const [paused, setPaused] = useState(false);
 
@@ -33,7 +36,6 @@ export function FieldGallery() {
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      {/* Main Gallery */}
       <div className="relative overflow-hidden rounded-2xl border border-border bg-black shadow-sm">
         <div className="relative aspect-[16/9] w-full sm:aspect-[16/8.5]">
           {GALLERY.map((s, idx) => (
@@ -54,7 +56,6 @@ export function FieldGallery() {
             />
           ))}
 
-          {/* Subtle bottom gradient only behind text */}
           <div
             className="
               pointer-events-none absolute inset-x-0 bottom-0 h-44
@@ -65,20 +66,19 @@ export function FieldGallery() {
             "
           />
 
-          {/* Image counter */}
           <div className="absolute left-5 top-5 rounded-full border border-white/20 bg-black/30 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-md">
             {String(i + 1).padStart(2, "0")} /{" "}
             {String(total).padStart(2, "0")}
           </div>
 
-          {/* Previous */}
           <button
             type="button"
-            aria-label="Previous photo"
+            aria-label={t.gallery.previous}
             onClick={() => go(-1)}
             className="
               absolute left-4 top-1/2
-              flex size-11 -translate-y-1/2 items-center justify-center
+              flex size-11 -translate-y-1/2
+              items-center justify-center
               rounded-full border border-white/30
               bg-black/25 text-white
               backdrop-blur-md
@@ -89,14 +89,14 @@ export function FieldGallery() {
             <ChevronLeft className="size-5" />
           </button>
 
-          {/* Next */}
           <button
             type="button"
-            aria-label="Next photo"
+            aria-label={t.gallery.next}
             onClick={() => go(1)}
             className="
               absolute right-4 top-1/2
-              flex size-11 -translate-y-1/2 items-center justify-center
+              flex size-11 -translate-y-1/2
+              items-center justify-center
               rounded-full border border-white/30
               bg-black/25 text-white
               backdrop-blur-md
@@ -107,10 +107,9 @@ export function FieldGallery() {
             <ChevronRight className="size-5" />
           </button>
 
-          {/* Caption */}
           <div className="absolute inset-x-0 bottom-0 p-6 text-white sm:p-8">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/70">
-              From the field
+              {t.gallery.fromField}
             </p>
 
             <h3 className="mt-2 max-w-3xl text-2xl font-semibold leading-tight sm:text-3xl">
@@ -124,7 +123,6 @@ export function FieldGallery() {
         </div>
       </div>
 
-      {/* Thumbnail Gallery */}
       <div className="mt-4 grid grid-cols-4 gap-2 sm:grid-cols-7">
         {GALLERY.map((s, idx) => (
           <button
@@ -156,7 +154,6 @@ export function FieldGallery() {
               "
             />
 
-            {/* Active thumbnail indicator */}
             {idx === i && (
               <span className="absolute inset-x-0 bottom-0 h-1 bg-primary" />
             )}
