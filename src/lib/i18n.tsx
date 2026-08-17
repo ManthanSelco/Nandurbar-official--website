@@ -78,22 +78,26 @@ const en: Dict = {
     contact: "Contact",
   },
   cta: { register: "Register" },
-  hero: {
-    meta: "21 August 2026 · Krishi Vigyan Kendra (KVK), Nandurbar",
-    title: "One-Day Mela for Farmers and SHG Women, Nandurbar",
-    body: "Co-hosted by SELCO Foundation and Krishi Vigyan Kendra, Nandurbar — bringing primary producers together with field champions, bankers and clean-energy technology providers on one platform.",
+ hero: {
+  meta: "21 August 2026 · PG RESORT, Nandurbar",
+  title: "Strengthening Farmers and Women through Collectives, Nandurbar",
+  body: "Co-hosted by SELCO Foundation and Krishi Vigyan Kendra, Nandurbar — bringing primary producers together with field champions, bankers and clean-energy technology providers on one platform.",
+},
+facts: [
+  { title: "Date", body: "21 August 2026" },
+  {
+    title: "Venue",
+    body: "PG RESORT, Serve no 281/1, Sita Ma Residency, Plot No 8, Nehru Nagar, Nandurbar, Maharashtra 425412",
   },
-  facts: [
-    { title: "Date", body: "21 August 2026" },
-    { title: "Venue", body: "Krishi Vigyan Kendra (KVK), Nandurbar" },
-    { title: "Participants", body: "~300 farmers, FPO members and SHG women entrepreneurs" },
-    { title: "Value chains", body: "Millet · Chilli · Honey · Mushroom · Fisheries" },
-  ],
-  about: {
-    eyebrow: "Why this mela",
-    title: "Bridging clean-energy technology, finance and community implementation",
-    body: "Nandurbar has strong potential in agriculture, forest produce and allied sectors, yet smallholders and women entrepreneurs still face post-harvest losses, manual processing constraints, limited formal credit and weak market linkages. Solar-powered processing, cold storage, dryers and mechanised tools can change that.",
-    objectives: [
+  { title: "Participants", body: "~300 farmers, FPO members and SHG women entrepreneurs" },
+  { title: "Value chains", body: "Millet · Chilli · Honey · Mushroom · Fisheries" },
+],
+ 
+    about: {
+  eyebrow: "Why this mela",
+  // title: "Strengthening Farmers and Women through Collectives",
+  // body: "Nandurbar district holds significant potential in agriculture, forest produce, and allied sectors, particularly in key commodities such as millet, chilly, honey, mushroom, and fisheries. However, smallholder farmers and rural women entrepreneurs continue to face challenges related to post-harvest losses, manual processing constraints, limited access to formal credit, and a lack of specialized branding and market linkages. Integrating Clean Energy-Driven Decentralized Renewable Energy (DRE) appliances — such as solar-powered processing units, cold storage, dryers, and mechanized tools — can dramatically enhance productivity, reduce drudgery, and boost household incomes across rural communities. To bridge the gap between technology, finance and community implementation, SELCO Foundation and Krishi Vigyan Kendra (KVK), Nandurbar are jointly hosting this one-day Mela for Farmers and SHG Women. The event aims to bring primary producers together with successful field champions, financial institutions, and branding-marketing expertise in a single, accessible platform.",
+  objectives: [
       {
         title: "Peer-to-peer knowledge exchange",
         body: "Connect local farmers and SHG women with field champions to inspire adoption of clean-energy livelihood solutions.",

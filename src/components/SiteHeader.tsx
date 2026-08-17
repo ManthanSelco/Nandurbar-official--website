@@ -10,16 +10,17 @@ export function SiteHeader() {
   const { t } = useI18n();
   const [open, setOpen] = useState(false);
 
-  const nav = [
-    { href: "#about", label: t.nav.about },
-    { href: "#value-chains", label: t.nav.chains },
-    { href: "#gallery", label: t.nav.gallery },
-    { href: "#case-studies", label: t.nav.caseStudies },
-    { href: "#agenda", label: t.nav.agenda },
-    { href: "#speakers", label: t.nav.speakers },
-    { href: "#contact", label: t.nav.contact },
-  ];
-
+ const nav = [
+  
+  { href: "#agenda", label: t.nav.agenda },
+  { href: "#value-chains", label: t.nav.chains },
+  { href: "#vendors", label: "Vendors" },
+  { href: "#case-studies", label: t.nav.caseStudies },
+  { href: "#speakers", label: t.nav.speakers },
+  { href: "#gallery", label: t.nav.gallery },
+  { href: "#about", label: t.nav.about },
+  { href: "#contact", label: t.nav.contact },
+];
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/90 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center gap-4 px-5 py-3">
