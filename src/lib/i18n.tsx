@@ -6,14 +6,22 @@ import {
   type ReactNode,
 } from "react";
 
+/* =========================================================
+   SUPPORTED LANGUAGES
+========================================================= */
+
 export const LANGS = [
+  { code: "mr", label: "मराठी" },
   { code: "en", label: "English" },
   { code: "hi", label: "हिंदी" },
-  { code: "mr", label: "मराठी" },
   { code: "gu", label: "ગુજરાતી" },
 ] as const;
 
 export type Lang = (typeof LANGS)[number]["code"];
+
+/* =========================================================
+   TYPES
+========================================================= */
 
 export type Chain = {
   id: string;
@@ -153,6 +161,9 @@ export type Dict = {
     note: string;
   };
 };
+/* =========================================================
+   ENGLISH
+========================================================= */
 
 const en: Dict = {
   brandTop: "SELCO Foundation × KVK",
@@ -174,7 +185,7 @@ const en: Dict = {
   },
 
   hero: {
-    meta: "21 August 2026 · PG RESORT, Nandurbar",
+    meta: "21-22 August 2026 · PG RESORT, Nandurbar",
     title:
       "Strengthening Farmers and Women through Collectives, Nandurbar",
     body:
@@ -184,7 +195,7 @@ const en: Dict = {
   facts: [
     {
       title: "Date",
-      body: "21 August 2026",
+      body: "21 - 22th August 2026",
     },
     {
       title: "Venue",
@@ -194,7 +205,7 @@ const en: Dict = {
     {
       title: "Participants",
       body:
-        "~300 farmers, FPO members and SHG women entrepreneurs",
+        "~200 farmers, FPO members, SHG women entrepreneurs, bankers, champion entrepreneurs and Ngos",
     },
     {
       title: "Value chains",
@@ -386,6 +397,10 @@ const en: Dict = {
       "A joint initiative of SELCO Foundation and KVK, Nandurbar.",
   },
 };
+
+/* =========================================================
+   HINDI
+========================================================= */
 
 const hi: Dict = {
   brandTop: "सेल्को फाउंडेशन × केवीके",
@@ -599,8 +614,7 @@ const hi: Dict = {
 
   caseStudies: {
     eyebrow: "केस स्टडी",
-    title:
-      "असली कहानियाँ, असली प्रभाव",
+    title: "असली कहानियाँ, असली प्रभाव",
     body:
       "उन उद्यमियों से मिलें जो स्वच्छ ऊर्जा आधारित तकनीक से पहले ही स्थायी आय कमा रहे हैं।",
     featured: "प्रमुख क्षेत्रीय कहानी",
@@ -662,7 +676,7 @@ const mr: Dict = {
     {
       title: "सहभागी",
       body:
-        "सुमारे 300 शेतकरी, एफपीओ सदस्य व बचत गट महिला उद्योजक",
+        "सुमारे 200 शेतकरी, एफपीओ सदस्य व बचत गट महिला उद्योजक",
     },
     {
       title: "मूल्य साखळ्या",
@@ -1104,56 +1118,199 @@ const gu: Dict = {
   },
 };
 
+/* =========================================================
+   DICTIONARIES
+========================================================= */
+
 const DICTS: Record<Lang, Dict> = {
+  mr,
   en,
   hi,
-  mr,
   gu,
 };
 
-const LangContext = createContext<{
+
+/* =========================================================
+   LANGUAGE VALIDATION
+========================================================= */
+
+function isValidLanguage(value: string | null): value is Lang {
+  return (
+    value === "mr" ||
+    value === "en" ||
+    value === "hi" ||
+    value === "gu"
+  );
+}
+
+
+/* =========================================================
+   STORAGE KEY
+========================================================= */
+
+const LANGUAGE_STORAGE_KEY = "nandurbar-mela-language";
+
+
+/* =========================================================
+   GET INITIAL LANGUAGE
+========================================================= */
+
+/**
+ * Marathi is ALWAYS the default language.
+ *
+ * We deliberately do NOT use:
+ *
+ * navigator.language
+ * navigator.languages
+ * browser language
+ * system language
+ *
+ * This prevents the website from automatically changing
+ * Marathi to English.
+ */
+
+function getInitialLanguage(): Lang {
+  // Server-side rendering
+  if (typeof window === "undefined") {
+    return "mr";
+  }
+
+  try {
+    const savedLanguage = window.localStorage.getItem(
+      LANGUAGE_STORAGE_KEY,
+    );
+
+    if (isValidLanguage(savedLanguage)) {
+      return savedLanguage;
+    }
+  } catch (error) {
+    console.warn(
+      "Unable to read saved language preference:",
+      error,
+    );
+  }
+
+  // IMPORTANT:
+  // No saved language = Marathi
+  return "mr";
+}
+
+
+/* =========================================================
+   LANGUAGE CONTEXT
+========================================================= */
+
+type LanguageContextValue = {
   lang: Lang;
-  setLang: (l: Lang) => void;
+  setLang: (language: Lang) => void;
   t: Dict;
-}>({
-  lang: "en",
-  setLang: () => {},
-  t: en,
-});
+};
+
+const LangContext =
+  createContext<LanguageContextValue>({
+    lang: "mr",
+    setLang: () => {},
+    t: mr,
+  });
+
+
+/* =========================================================
+   LANGUAGE PROVIDER
+========================================================= */
 
 export function LanguageProvider({
   children,
 }: {
   children: ReactNode;
 }) {
-  const [lang, setLang] = useState<Lang>("en");
+  /**
+   * IMPORTANT:
+   *
+   * We initialize the state directly from getInitialLanguage().
+   *
+   * Marathi is the fallback.
+   */
+  const [lang, setLangState] = useState<Lang>(
+    getInitialLanguage,
+  );
 
-  useEffect(() => {
-    const saved =
-      window.localStorage.getItem("lang") as Lang | null;
 
-    if (saved && saved in DICTS) {
-      setLang(saved);
+  /* =======================================================
+     SET LANGUAGE
+  ======================================================= */
+
+  const setLang = (language: Lang) => {
+    // Safety check
+    if (!DICTS[language]) {
+      console.warn(
+        `Unsupported language: ${language}`,
+      );
+
+      return;
     }
-  }, []);
+
+    // Update React state immediately
+    setLangState(language);
+
+    // Save immediately
+    if (typeof window !== "undefined") {
+      try {
+        window.localStorage.setItem(
+          LANGUAGE_STORAGE_KEY,
+          language,
+        );
+      } catch (error) {
+        console.warn(
+          "Unable to save language preference:",
+          error,
+        );
+      }
+
+      // Update browser document language
+      document.documentElement.lang = language;
+    }
+  };
+
+
+  /* =======================================================
+     SYNC HTML LANG ATTRIBUTE
+  ======================================================= */
 
   useEffect(() => {
-    window.localStorage.setItem("lang", lang);
+    if (typeof document === "undefined") {
+      return;
+    }
+
     document.documentElement.lang = lang;
   }, [lang]);
 
+
+  /* =======================================================
+     CONTEXT VALUE
+  ======================================================= */
+
+  const contextValue: LanguageContextValue = {
+    lang,
+    setLang,
+    t: DICTS[lang],
+  };
+
+
+  /* =======================================================
+     PROVIDER
+  ======================================================= */
+
   return (
-    <LangContext.Provider
-      value={{
-        lang,
-        setLang,
-        t: DICTS[lang],
-      }}
-    >
+    <LangContext.Provider value={contextValue}>
       {children}
     </LangContext.Provider>
   );
 }
+
+
+/* =========================================================
+   useI18n HOOK
+========================================================= */
 
 export function useI18n() {
   return useContext(LangContext);
