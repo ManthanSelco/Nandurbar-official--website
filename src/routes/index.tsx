@@ -771,7 +771,7 @@ function Index() {
           <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {[
               {
-                name: "Maxlorx Global industry",
+                name: "Maxlord Global industry",
                 description: "Oil extraction machine",
                 email: "maxlordind@gmail.com",
               },

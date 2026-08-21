@@ -51,7 +51,7 @@ export function SiteHeader() {
           <LanguageSwitcher />
 
           <a
-            href={REGISTER_URL}
+            href="https://nandurbar-even-frontend.vercel.app/register?questions=%5B%5D"
             className="rounded-sm bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
           >
             {t.cta.register}
@@ -62,7 +62,7 @@ export function SiteHeader() {
           <LanguageSwitcher />
 
           <a
-            href={REGISTER_URL}
+            href="https://nandurbar-even-frontend.vercel.app/register?questions=%5B%5D"
             className="rounded-sm bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground"
           >
             {t.cta.register}
